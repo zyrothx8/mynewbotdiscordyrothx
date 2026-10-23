@@ -1,1 +1,163 @@
 
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Bot Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h2>✦ BOT PANEL</h2>
+
+        <button class="language-button" id="languageButton">
+            العربية
+        </button>
+
+        <nav>
+            <a href="#home" data-en="🏠 Dashboard" data-ar="🏠 الرئيسية">🏠 Dashboard</a>
+            <a href="#commands" data-en="⚙️ Commands" data-ar="⚙️ الأوامر">⚙️ Commands</a>
+            <a href="#welcome" data-en="👋 Welcome" data-ar="👋 الترحيب">👋 Welcome</a>
+            <a href="#settings" data-en="🔧 Settings" data-ar="🔧 الإعدادات">🔧 Settings</a>
+        </nav>
+    </aside>
+
+    <main class="main" id="home">
+
+        <header>
+            <h1 data-en="Dashboard" data-ar="لوحة التحكم">Dashboard</h1>
+            <p data-en="Manage your Discord bot in one place."
+               data-ar="أدر بوت Discord الخاص بك من مكان واحد.">
+                Manage your Discord bot in one place.
+            </p>
+        </header>
+
+        <section class="cards">
+            <div class="card">
+                <h3 data-en="Bot Status" data-ar="حالة البوت">Bot Status</h3>
+                <p class="status"
+                   data-en="● Offline" data-ar="● غير متصل">● Offline</p>
+            </div>
+
+            <div class="card">
+                <h3 data-en="Servers" data-ar="السيرفرات">Servers</h3>
+                <p>0</p>
+            </div>
+
+            <div class="card">
+                <h3 data-en="Commands" data-ar="الأوامر">Commands</h3>
+                <p>0</p>
+            </div>
+        </section>
+
+        <section class="panel" id="commands">
+            <h2 data-en="Bot Management" data-ar="إدارة البوت">
+                Bot Management
+            </h2>
+
+            <p data-en="Connect a backend to manage your bot."
+               data-ar="اربط خادمًا خلفيًا لإدارة البوت.">
+                Connect a backend to manage your bot.
+            </p>
+
+            <button id="statusButton"
+                data-en="Check Connection"
+                data-ar="فحص الاتصال">Check Connection</button>
+
+            <p id="result" aria-live="polite"></p>
+        </section>
+
+        <section class="panel" id="welcome">
+            <h2 data-en="Welcome Message" data-ar="رسالة الترحيب">
+                Welcome Message
+            </h2>
+
+            <label for="welcomeMessage"
+                data-en="Message Text"
+                data-ar="نص الرسالة">Message Text</label>
+
+            <input id="welcomeMessage" type="text"
+                data-placeholder-en="Welcome to our server!"
+                data-placeholder-ar="أهلاً بك في سيرفرنا!"
+                placeholder="Welcome to our server!">
+
+            <button id="previewButton"
+                data-en="Preview Message"
+                data-ar="معاينة الرسالة">Preview Message</button>
+
+            <p id="preview" aria-live="polite"></p>
+        </section>
+
+        <section class="panel" id="settings">
+            <h2 data-en="Settings" data-ar="الإعدادات">Settings</h2>
+            <p data-en="Dashboard language can be changed at any time."
+               data-ar="يمكنك تغيير لغة لوحة التحكم في أي وقت.">
+                Dashboard language can be changed at any time.
+            </p>
+        </section>
+
+        <footer data-en="Discord Bot Dashboard © 2026"
+                data-ar="لوحة تحكم بوت Discord © 2026">
+            Discord Bot Dashboard © 2026
+        </footer>
+
+    </main>
+
+    <script>
+        let currentLanguage = "en";
+
+        const languageButton = document.getElementById("languageButton");
+
+        function setLanguage(language) {
+            currentLanguage = language;
+
+            document.documentElement.lang = language;
+            document.documentElement.dir =
+                language === "ar" ? "rtl" : "ltr";
+
+            document.querySelectorAll("[data-en][data-ar]").forEach(element => {
+                element.textContent = element.dataset[language];
+            });
+
+            document.querySelectorAll("[data-placeholder-en]").forEach(element => {
+                element.placeholder =
+                    language === "ar"
+                        ? element.dataset.placeholderAr
+                        : element.dataset.placeholderEn;
+            });
+
+            languageButton.textContent =
+                language === "en" ? "العربية" : "English";
+
+            document.getElementById("result").textContent = "";
+            document.getElementById("preview").textContent = "";
+        }
+
+        languageButton.addEventListener("click", () => {
+            setLanguage(currentLanguage === "en" ? "ar" : "en");
+        });
+
+        document.getElementById("statusButton").addEventListener("click", () => {
+            const message = currentLanguage === "ar"
+                ? "الواجهة جاهزة، لكن يلزم خادم خلفي لفحص اتصال البوت."
+                : "The dashboard is ready, but a backend is required to check the bot connection.";
+
+            document.getElementById("result").textContent = message;
+        });
+
+        document.getElementById("previewButton").addEventListener("click", () => {
+            const input = document.getElementById("welcomeMessage");
+            const message = input.value.trim();
+
+            document.getElementById("preview").textContent = message ||
+                (currentLanguage === "ar"
+                    ? "اكتب رسالة الترحيب أولاً."
+                    : "Please enter a welcome message first.");
+        });
+    </script>
+
+</body>
+</html>
+
